@@ -1,0 +1,30 @@
+# install_docker.yml
+- name: Install Docker
+  apt:
+    name: docker.io
+    state: present
+
+- name: Enable docker socket
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Install docker-py
+  pip:
+    name: docker-py
+    state: present
+
+- name: Build Docker image
+  docker_image:
+    name: ubuntu
+    path: /home/santos/CPE232_HOA11/docker/
+
+- name: Run Docker container
+  docker_container:
+    name: ubuntu
+    image: ubuntu
+    state: started
+    ports:
+      - "8080:80"
+    restart_policy: always
